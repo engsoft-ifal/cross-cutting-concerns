@@ -27,14 +27,14 @@ public class BookController {
     }
 
     @GetMapping("/title/{bookTitle}")
-    public List<Book> findByTitle(@PathVariable String bookTitle) {
+    public List findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
     }
 
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
         return bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+        .orElseThrow(() -> new BookNotFoundException("Livro com ID " + id + " não foi encontrado."));
     }
 
     @PostMapping
@@ -46,17 +46,17 @@ public class BookController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+        .orElseThrow(() -> new BookNotFoundException("Livro com ID " + id + " não foi encontrado."));
         bookRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (book.getId() != id) {
-          throw new RuntimeException("Os ID's não estão corretos.");
+          throw new BookIdMismatchException("Ids diferentes");
         }
         bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+          .orElseThrow(() -> new BookNotFoundException("Livro com ID " + id + " não foi encontrado."));
         return bookRepository.save(book);
     }
 }
