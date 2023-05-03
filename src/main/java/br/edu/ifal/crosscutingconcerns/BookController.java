@@ -18,46 +18,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/books")
 public class BookController {
 
-    @Autowired
-    private BookRepository bookRepository;
+  @Autowired
+  private BookRepository bookRepository;
 
-    @GetMapping
-    public Iterable<Book> findAll() {
-        return bookRepository.findAll();
-    }
 
-    @GetMapping("/title/{bookTitle}")
-    public List<Book> findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
-    }
+  @GetMapping
+  public Iterable<Book> findAll() {
+    return bookRepository.findAll();
+  }
 
-    @GetMapping("/{id}")
-    public Book findOne(@PathVariable Long id) {
-        return bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
-    }
+  @GetMapping("/title/{bookTitle}")
+  public List<Book> findByTitle(@PathVariable String bookTitle) {
+    return bookRepository.findByTitle(bookTitle);
+  }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Book create(@RequestBody Book book) {
-        return bookRepository.save(book);
-    }
+  @GetMapping("/{id}")
+  public Book findOne(@PathVariable Long id) {
+    return bookRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+  }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
-        bookRepository.deleteById(id);
-    }
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Book create(@RequestBody Book book) {
+    return bookRepository.save(book);
+  }
 
-    @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
-        if (book.getId() != id) {
-          throw new RuntimeException("Os ID's não estão corretos.");
-        }
-        bookRepository.findById(id)
-          .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
-        return bookRepository.save(book);
+  @DeleteMapping("/{id}")
+  public void delete(@PathVariable Long id) {
+    bookRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+    bookRepository.deleteById(id);
+  }
+
+  @PutMapping("/{id}")
+  public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
+    if (book.getId() != id) {
+      throw new RuntimeException("Os ID's não estão corretos.");
     }
+    bookRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+    return bookRepository.save(book);
+  }
 }
-
