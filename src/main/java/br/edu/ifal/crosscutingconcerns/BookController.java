@@ -21,6 +21,9 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private BookOnlineService bookOnlineService;
+
     @GetMapping
     public Iterable<Book> findAll() {
         return bookRepository.findAll();
@@ -35,6 +38,11 @@ public class BookController {
     public Book findOne(@PathVariable Long id) {
         return bookRepository.findById(id)
           .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+    }
+
+    @GetMapping("/isbn/{isbn}")
+    public Book findByISBN(@PathVariable String isbn) {
+        return bookOnlineService.getByISBN(isbn);
     }
 
     @PostMapping
