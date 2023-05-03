@@ -3,6 +3,8 @@ package br.edu.ifal.crosscutingconcerns;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +42,16 @@ public class BookController {
           .orElseThrow(() -> new RuntimeException("Livro não encontrado"));
     }
 
+    @Cacheable("book-service")
     @GetMapping("/isbn/{isbn}")
     public Book findByISBN(@PathVariable String isbn) {
         return bookOnlineService.getByISBN(isbn);
+    }
+
+    @CacheEvict(cacheNames = "book-service", allEntries = true)
+    @GetMapping("/isbn/")
+    public String clear() {
+        return "Cache book-service limpo";
     }
 
     @PostMapping
