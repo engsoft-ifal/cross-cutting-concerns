@@ -29,9 +29,9 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public String mylogin(@RequestParam String login, @RequestParam String senha) {
-        System.out.println("Login: " + login);
-        System.out.println("Senha: " + senha);
+    public String mylogin(@RequestParam String username, @RequestParam String password) {
+        System.out.println("Login: " + username);
+        System.out.println("Senha: " + password);
         return "home";
     }
 
