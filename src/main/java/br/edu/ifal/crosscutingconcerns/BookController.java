@@ -2,6 +2,8 @@ package br.edu.ifal.crosscutingconcerns;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,11 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/books")
 public class BookController {
 
+  Logger logger = LoggerFactory.getLogger(BookController.class);
+
     @Autowired
     private BookRepository bookRepository;
 
     @GetMapping
     public Iterable<Book> findAll() {
+        logger.trace("A TRACE Message");
+        logger.debug("A DEBUG Message");
+        logger.info("An INFO Message");
+        logger.warn("A WARN Message");
+        logger.error("An ERROR Message");
         return bookRepository.findAll();
     }
 
